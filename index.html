@@ -1099,9 +1099,13 @@ async function dbGetEquipos(){
 
 async function dbCrearEquipo(eq){
   const {error} = await sb.from('equipos').insert({
-    id: eq.id, cat: eq.cat, nivel: eq.nivel, gen: eq.gen
+    id: eq.id,
+    cat: eq.cat,
+    nivel: eq.nivel,
+    gen: eq.gen,
+    nombre: `Malvín ${eq.cat} ${eq.nivel}`
   });
-  if(error) console.error('dbCrearEquipo:', error);
+  if(error) console.error('dbCrearEquipo:', JSON.stringify(error));
 }
 
 async function dbEliminarEquipo(id){
