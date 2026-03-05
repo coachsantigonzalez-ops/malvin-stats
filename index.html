@@ -42,7 +42,7 @@ select,input{font-family:inherit}
 .page.active{display:flex}
 
 /* HOME */
-#page-home{background:var(--bg);align-items:center;justify-content:center;position:relative;overflow-y:auto}
+#page-home{background:var(--bg);align-items:center;justify-content:center;position:relative;overflow:hidden}
 #page-home::before{content:'';position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 64px,rgba(255,255,255,.022) 64px,rgba(255,255,255,.022) 65px),repeating-linear-gradient(90deg,transparent,transparent 64px,rgba(255,255,255,.022) 64px,rgba(255,255,255,.022) 65px)}
 #page-home::after{content:'';position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:800px;height:600px;pointer-events:none;background:radial-gradient(ellipse,rgba(37,99,235,.15) 0%,transparent 68%)}
 .home-inner{z-index:1;display:flex;flex-direction:column;align-items:center;width:100%;gap:0}
@@ -360,12 +360,8 @@ select.qsel option{background:#0d2044}
   <div class="home-inner">
     <div class="home-header">
       <div class="home-season" id="hdr-season">SIN TEMPORADA ACTIVA</div>
-      <h1 class="home-title"><span class="t1">Club Malvín</span><span class="t2">Stats Player</span></h1>
+      <h1 class="home-title"><span class="t1" style="color:#0055A4">Player Performance Lab</span><span class="t2" style="color:#fff;font-size:0.45em;letter-spacing:2px">Club Malvín</span></h1>
       <div class="home-record" id="hdr-record">Configurá una temporada para comenzar</div>
-    </div>
-    <div style="text-align:center;margin-bottom:8px">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;color:#0055A4;letter-spacing:1px;line-height:1">PLAYER DATA LAB</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-top:2px">Club Malvín</div>
     </div>
     <div class="home-actions">
       <div class="ha-card" onclick="openModalTem()"><div class="ha-icon">🏆</div><div class="ha-title">Nueva Temporada</div><div class="ha-desc">Iniciá una temporada nueva.</div><div class="ha-btn">Configurar</div></div>
