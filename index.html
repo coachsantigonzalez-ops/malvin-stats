@@ -343,7 +343,7 @@ select.qsel option{background:#0d2044}
 <div id="topbar">
   <div class="brand">
     <div class="brand-logo">🏀</div>
-    <div class="brand-name">MALVÍN <span>STATS</span></div>
+    <div class="brand-name">MALVÍN <span>STATS</span></div></div>
   </div>
   <nav class="main-nav">
     <button class="mnav active" onclick="goPage('home')">Home</button>
@@ -363,10 +363,14 @@ select.qsel option{background:#0d2044}
       <h1 class="home-title"><span class="t1">Club Malvín</span><span class="t2">Stats Player</span></h1>
       <div class="home-record" id="hdr-record">Configurá una temporada para comenzar</div>
     </div>
+    <div style="text-align:center;margin-bottom:8px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:36px;color:#0055A4;letter-spacing:1px;line-height:1">PLAYER DATA LAB</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-top:2px">Club Malvín</div>
+    </div>
     <div class="home-actions">
       <div class="ha-card" onclick="openModalTem()"><div class="ha-icon">🏆</div><div class="ha-title">Nueva Temporada</div><div class="ha-desc">Iniciá una temporada nueva.</div><div class="ha-btn">Configurar</div></div>
       <div class="ha-card featured" onclick="openNuevo()"><div class="ha-icon">🏀</div><div class="ha-title">Nuevo Partido</div><div class="ha-desc">Registrá un partido en vivo con estadísticas en tiempo real.</div><div class="ha-btn featured">Iniciar ahora</div></div>
-      <div class="ha-card" onclick="openModalEquipo()"><div class="ha-icon">👥</div><div class="ha-title">Configurar Equipo</div><div class="ha-desc">Configurá el plantel: jugadores, camisetas y posiciones.</div><div class="ha-btn">Configurar</div></div>
+      <div class="ha-card" onclick="openModalEquipo2()"><div class="ha-icon">➕</div><div class="ha-title">Nuevo Equipo</div><div class="ha-desc">Creá una categoría nueva: jugadores, división y género.</div><div class="ha-btn">Crear</div></div>
     </div>
     <div class="kpi-grid">
       <div class="kpi-card" style="--accent:var(--gold)"><div class="kpi-val" id="kpi-ortg">—</div><div class="kpi-lbl">Offensive Rtg</div><div class="kpi-sub neu" id="kpi-ortg-s">Sin datos</div></div>
@@ -671,9 +675,8 @@ select.qsel option{background:#0d2044}
           <div class="est-supertitle">Club Malvín</div>
           <div class="est-title">Estadísticas por Equipo</div>
         </div>
-        <!-- BOTONES: Nuevo Equipo + Eliminar Equipo -->
+        <!-- BOTONES: Eliminar Equipo -->
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end">
-          <button class="est-new-btn" onclick="openModalEquipo2()">+ Nuevo Equipo</button>
           <button class="est-del-btn" id="btn-del-mode" onclick="toggleDeleteMode()">🗑 Eliminar</button>
         </div>
       </div>
@@ -897,39 +900,61 @@ select.qsel option{background:#0d2044}
 
 <!-- MODAL NUEVO EQUIPO -->
 <div id="modal-equipo2" style="display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.82);backdrop-filter:blur(8px);align-items:center;justify-content:center">
-  <div class="mbox">
-    <div class="micon">🏀</div>
-    <div class="mtitle">Nuevo Equipo</div>
-    <div class="mdesc">Creá una nueva categoría de Malvín.</div>
-    <div class="mform">
-      <div class="mf"><label>Club</label><input type="text" value="Club Malvín" disabled style="opacity:.5"/></div>
-      <div class="mf">
-        <label>Categoría</label>
-        <select id="eq2-cat" style="background:var(--navy2);color:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 12px;width:100%;font-size:13px">
-          <option value="U20">U20</option><option value="U18">U18</option><option value="U16">U16</option>
-          <option value="U15">U15</option><option value="U14">U14</option><option value="U13">U13</option>
-          <option value="U12">U12</option><option value="Mayor">Mayor</option>
-        </select>
-      </div>
-      <div class="mf">
-        <label>Nivel / División</label>
-        <select id="eq2-nivel" style="background:var(--navy2);color:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 12px;width:100%;font-size:13px">
-          <option value="Malvín">Malvín</option><option value="Sur">Sur</option><option value="Norte">Norte</option>
-          <option value="Este">Este</option><option value="Oeste">Oeste</option><option value="A">A</option><option value="B">B</option>
-        </select>
-      </div>
-      <div class="mf">
-        <label>Género</label>
-        <div style="display:flex;gap:10px;margin-top:4px">
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--white);cursor:pointer"><input type="radio" name="eq2-gen" value="M" checked style="accent-color:var(--blue)"/> Masculino</label>
-          <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--white);cursor:pointer"><input type="radio" name="eq2-gen" value="F" style="accent-color:var(--blue)"/> Femenino</label>
+  <div class="mbox" style="max-height:90vh;overflow-y:auto;width:min(94vw,440px)">
+
+    <!-- PASO 1: Datos del equipo -->
+    <div id="eq2-paso1">
+      <div class="micon">➕</div>
+      <div class="mtitle">Nuevo Equipo</div>
+      <div class="mdesc">Configurá los datos de la categoría.</div>
+      <div class="mform">
+        <div class="mf"><label>Club</label><input type="text" value="Club Malvín" disabled style="opacity:.5"/></div>
+        <div class="mf">
+          <label>Categoría</label>
+          <select id="eq2-cat" style="background:var(--navy2);color:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 12px;width:100%;font-size:13px">
+            <option value="U20">U20</option><option value="U18">U18</option><option value="U16">U16</option>
+            <option value="U15">U15</option><option value="U14">U14</option><option value="U13">U13</option>
+            <option value="U12">U12</option><option value="Mayor">Mayor</option>
+          </select>
+        </div>
+        <div class="mf">
+          <label>División</label>
+          <select id="eq2-nivel" style="background:var(--navy2);color:var(--white);border:1px solid var(--border);border-radius:8px;padding:9px 12px;width:100%;font-size:13px">
+            <option value="Malvín">Malvín</option>
+            <option value="Sur">Sur</option>
+            <option value="C">C</option>
+            <option value="Norte">Norte</option>
+            <option value="Este">Este</option>
+            <option value="Oeste">Oeste</option>
+          </select>
+        </div>
+        <div class="mf">
+          <label>Género</label>
+          <div style="display:flex;gap:10px;margin-top:4px">
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--white);cursor:pointer"><input type="radio" name="eq2-gen" value="M" checked style="accent-color:var(--blue)"/> Masculino</label>
+            <label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:400;color:var(--white);cursor:pointer"><input type="radio" name="eq2-gen" value="F" style="accent-color:var(--blue)"/> Femenino</label>
+          </div>
         </div>
       </div>
+      <div class="mbtns">
+        <button class="mok" onclick="eq2Siguiente()">Siguiente — Cargar Jugadores →</button>
+        <button class="mcancel" onclick="cerrarModalEquipo2()">Cancelar</button>
+      </div>
     </div>
-    <div class="mbtns">
-      <button class="mok" onclick="crearEquipo()">✔ Crear Equipo</button>
-      <button class="mcancel" onclick="cerrarModalEquipo2()">Cancelar</button>
+
+    <!-- PASO 2: Cargar jugadores -->
+    <div id="eq2-paso2" style="display:none">
+      <div class="micon">👥</div>
+      <div class="mtitle">Cargar Jugadores</div>
+      <div id="eq2-paso2-desc" class="mdesc"></div>
+      <div id="eq2-roster-list" style="display:flex;flex-direction:column;gap:6px;margin:12px 0;max-height:340px;overflow-y:auto"></div>
+      <button onclick="eq2AgregarJugador()" style="width:100%;padding:8px;border-radius:9px;border:1.5px dashed rgba(255,255,255,.2);background:transparent;color:rgba(255,255,255,.5);font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-bottom:10px">+ Agregar jugador</button>
+      <div class="mbtns">
+        <button class="mok" onclick="eq2Confirmar()">✔ Crear Equipo</button>
+        <button class="mcancel" onclick="eq2Volver()">← Volver</button>
+      </div>
     </div>
+
   </div>
 </div>
 
@@ -1092,7 +1117,7 @@ async function dbGetEquipos(){
       }))
     }));
   } catch(err) {
-    console.error('dbGetEquipos error:', JSON.stringify(err));
+    console.warn('dbGetEquipos: sin conexión');
     return null;
   }
 }
@@ -1192,7 +1217,7 @@ async function syncFromDB(){
       console.log('✅ Sync desde Supabase OK —', data.length, 'equipos');
     }
   } catch(e){
-    console.warn('⚠️ Sin conexión, usando datos locales:', e);
+    console.warn('⚠️ Sin conexión, usando datos locales');
   }
 }
 </script>
@@ -1226,8 +1251,9 @@ let pendingShot=null;
 document.addEventListener('DOMContentLoaded',()=>{
   buildCourt();buildBench();renderFouls();renderStats();
   document.getElementById('m-fecha').value=new Date().toISOString().split('T')[0];
-  // Sync desde Supabase al iniciar
-  syncFromDB().then(()=>renderEquipos());
+  // Render inmediato con datos locales, sync en background
+  renderEquipos();
+  syncFromDB().then(()=>renderEquipos()).catch(()=>{});
   updateClock();
 });
 
@@ -1380,22 +1406,81 @@ function volverLista(){
 function openModalEquipo2(){document.getElementById('modal-equipo2').style.display='flex';}
 function cerrarModalEquipo2(){document.getElementById('modal-equipo2').style.display='none';}
 
-function crearEquipo(){
-  const cat=document.getElementById('eq2-cat').value;
-  const nivel=document.getElementById('eq2-nivel').value;
-  const gen=document.querySelector('input[name="eq2-gen"]:checked').value;
-  const equipos=getEquipos();
-  if(equipos.find(e=>e.cat===cat&&e.nivel===nivel&&e.gen===gen)){toast('⚠️ Ese equipo ya existe');cerrarModalEquipo2();return;}
-  const id=`${cat}_${nivel}_${gen}_${Date.now()}`;
-  const nuevoEq = {id,cat,nivel,gen,partidos:[]};
+// ── NUEVO EQUIPO — FLUJO 2 PASOS ─────────────────────
+let eq2TempRoster = []; // jugadores ingresados en paso 2
+
+function eq2Siguiente(){
+  const cat   = document.getElementById('eq2-cat').value;
+  const nivel = document.getElementById('eq2-nivel').value;
+  const gen   = document.querySelector('input[name="eq2-gen"]:checked').value;
+  const equipos = getEquipos();
+  if(equipos.find(e=>e.cat===cat&&e.nivel===nivel&&e.gen===gen)){
+    toast('⚠️ Ese equipo ya existe'); return;
+  }
+  const genLabel = gen==='M'?'Masculino':'Femenino';
+  document.getElementById('eq2-paso2-desc').textContent = `Club Malvín ${cat} ${nivel} — ${genLabel}`;
+  eq2TempRoster = [];
+  document.getElementById('eq2-roster-list').innerHTML = '';
+  // Start with 12 empty slots
+  for(let i=0;i<12;i++) eq2AgregarJugador();
+  document.getElementById('eq2-paso1').style.display = 'none';
+  document.getElementById('eq2-paso2').style.display = 'block';
+}
+
+function eq2AgregarJugador(){
+  const list = document.getElementById('eq2-roster-list');
+  const idx  = list.children.length;
+  const row  = document.createElement('div');
+  row.style.cssText = 'display:flex;gap:6px;align-items:center';
+  row.innerHTML = `
+    <input placeholder="#" id="eq2-num-${idx}" type="number" min="0" max="99" style="width:52px;background:var(--navy2);color:var(--white);border:1px solid var(--border);border-radius:8px;padding:7px 8px;font-size:13px;text-align:center"/>
+    <input placeholder="Nombre del jugador" id="eq2-name-${idx}" type="text" style="flex:1;background:var(--navy2);color:var(--white);border:1px solid var(--border);border-radius:8px;padding:7px 10px;font-size:13px"/>
+    <button onclick="this.parentElement.remove()" style="background:rgba(239,68,68,.15);border:1px solid rgba(239,68,68,.3);border-radius:7px;color:#ef4444;padding:5px 8px;cursor:pointer;font-size:12px">✕</button>`;
+  list.appendChild(row);
+}
+
+function eq2Volver(){
+  document.getElementById('eq2-paso1').style.display = 'block';
+  document.getElementById('eq2-paso2').style.display = 'none';
+}
+
+function eq2Confirmar(){
+  const cat   = document.getElementById('eq2-cat').value;
+  const nivel = document.getElementById('eq2-nivel').value;
+  const gen   = document.querySelector('input[name="eq2-gen"]:checked').value;
+
+  // Collect roster from rows
+  const list  = document.getElementById('eq2-roster-list');
+  const rows  = list.children;
+  const roster = [];
+  for(let i=0;i<rows.length;i++){
+    const numEl  = rows[i].querySelector('input[type="number"]');
+    const nameEl = rows[i].querySelector('input[type="text"]');
+    const name   = nameEl?.value.trim();
+    if(!name) continue;
+    roster.push({ num: parseInt(numEl?.value)||0, name, pos: 'B' });
+  }
+  if(roster.length === 0){ toast('⚠️ Ingresá al menos un jugador'); return; }
+
+  const id = `${cat}_${nivel}_${gen}_${Date.now()}`;
+  const nuevoEq = {id, cat, nivel, gen, partidos:[], roster};
+  const equipos = getEquipos();
   equipos.push(nuevoEq);
   saveEquipos(equipos);
   cerrarModalEquipo2();
+  goPage('estadisticas');
   renderEquipos();
-  toast(`✅ Equipo Malvín ${cat} ${nivel} creado`);
+  toast(`✅ Malvín ${cat} ${nivel} creado con ${roster.length} jugadores`);
+
   // Guardar en Supabase
-  dbCrearEquipo(nuevoEq).catch(e=>console.error(e));
+  dbCrearEquipo(nuevoEq).then(()=>{
+    dbGuardarJugadores(id, roster).catch(e=>console.error(e));
+  }).catch(e=>console.error(e));
 }
+
+function crearEquipo(){ eq2Confirmar(); } // legacy alias
+
+
 
 let equipoActivoId=null;
 
